@@ -1,0 +1,25 @@
+{
+  "name": "simple_node_auth",
+  "version": "1.0.0",
+  "description": "https://www.youtube.com/watch?v=d_aJdcDq6AY\r Ulbi TV",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tss-legal-code/simple_node_auth.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tss-legal-code/simple_node_auth/issues"
+  },
+  "homepage": "https://github.com/tss-legal-code/simple_node_auth#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^6.8.1",
+    "nodemon": "^2.0.20"
+  }
+}
