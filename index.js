@@ -1,7 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const authRouter = require('./authRoutes');
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
 const app = express();
 
@@ -12,7 +13,7 @@ const start = async () => {
   try {
     mongoose.set('strictQuery', false);
     await mongoose.connect(
-      `mongodb+srv://qwerty:qwerty123@cluster0.wooca10.mongodb.net/?retryWrites=true&w=majority`,
+      process.env.DATABASE_URL,
       () => console.log('mongodb connected successfully'),
       (err) => console.log(err)
     );

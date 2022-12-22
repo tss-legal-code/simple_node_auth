@@ -1,7 +1,10 @@
 const User = require('./models/User');
 const Role = require('./models/Role');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const { validationResult } = require("express-validator");
+
+// const generateAccessToken = (id);
 class authController {
   async registartion(req, res) {
     try {
@@ -37,6 +40,7 @@ class authController {
         res.status(400).json({ message: "Wrong password" });
       }
       // JWT ...
+
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: "Login error" });
