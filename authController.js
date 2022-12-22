@@ -3,8 +3,15 @@ const Role = require('./models/Role');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require("express-validator");
+const { secret } = require('./config');
 
-// const generateAccessToken = (id);
+const generateAccessToken = (id, roles) => {
+  const payload = {
+    id,
+    roles
+  };
+  return jwt.sign(payload, secret, { expiresIn: '24h' });
+};
 class authController {
   async registartion(req, res) {
     try {
@@ -32,15 +39,15 @@ class authController {
     try {
       const { username, password } = req.body;
       const user = await User.findOne({ username });
-      if (user) {
-        return res.status(400).json({ message: "User has already been registered" });
+      if (!user) {
+        return res.status(400).json({ message: "User has not been registered yet" });
       }
       const isPasswordValid = bcrypt.compare(password, user.password);
       if (!isPasswordValid) {
         res.status(400).json({ message: "Wrong password" });
       }
-      // JWT ...
-
+      const token = generateAccessToken(user.id, user.roles);
+      return res.json({ token });
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: "Login error" });
@@ -54,8 +61,9 @@ class authController {
       // await userRole.save();
       // await adminRole.save();
       // // temporary workaround to create roles: end
-
-      res.json('server works');
+      const users = await User.find();
+      res.json(users);
+      // res.json('server works');
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: "Access users error" });
