@@ -11,7 +11,11 @@ app.use('/auth', authRouter);
 const start = async () => {
   try {
     mongoose.set('strictQuery', false);
-    await mongoose.connect(`mongodb+srv://qwerty:qwerty123@cluster0.wooca10.mongodb.net/?retryWrites=true&w=majority`);
+    await mongoose.connect(
+      `mongodb+srv://qwerty:qwerty123@cluster0.wooca10.mongodb.net/?retryWrites=true&w=majority`,
+      () => console.log('mongodb connected successfully'),
+      (err) => console.log(err)
+    );
     app.listen(PORT, () => console.log(`server started at ${PORT}`));
   } catch (err) {
     console.log(err);
