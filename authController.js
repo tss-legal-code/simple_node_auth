@@ -1,13 +1,18 @@
 const User = require('./models/User');
 const Role = require('./models/Role');
 const bcrypt = require('bcryptjs');
+const { validationResult } = require("express-validator");
 class authController {
   async registartion(req, res) {
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ message: "Validation errors", errors });
+      }
       const { username, password } = req.body;
       const candidate = await User.findOne({ username });
       if (candidate) {
-        return res.status(400).json({ message: "User already registered" });
+        return res.status(400).json({ message: "User has already been registered" });
       }
       const passwordSalt = bcrypt.genSaltSync(7);
       const passwordHash = bcrypt.hashSync(password, passwordSalt);
@@ -22,7 +27,16 @@ class authController {
   };
   async login(req, res) {
     try {
-
+      const { username, password } = req.body;
+      const user = await User.findOne({ username });
+      if (user) {
+        return res.status(400).json({ message: "User has already been registered" });
+      }
+      const isPasswordValid = bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        res.status(400).json({ message: "Wrong password" });
+      }
+      // JWT ...
     } catch (error) {
       console.log(error);
       res.status(400).json({ message: "Login error" });
